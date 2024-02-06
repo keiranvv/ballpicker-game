@@ -81,17 +81,17 @@ internal class Game(int? seed, double startingBalance = 0, bool demoMode = false
   private string Pick() {
     // Sort these so that we can start at the lowest weight and check if our roll was under that, going up until we find a value <= rolled value.
     // This can of course be done once when the ball are set, but it might then be unclear that it's required. The tradeoff would be a small amount of memory overhead.
-    _balls.ToDictionary().OrderBy(x => x.Value);
+    var orderedBalls = _balls.OrderBy(x => x.Value);
 
-    var numberOfBalls = _balls.Sum(b => b.Value);
+    var numberOfBalls = orderedBalls.Sum(b => b.Value);
 
     var roll = r.Next(numberOfBalls);
 
     var pickedBall = "";
 
-    for (int i = 0; i < _balls.Count; i++) {
-      if (_balls.ElementAt(i).Value <= roll) {
-        pickedBall = _balls.ElementAt(i).Key;
+    for (int i = 0; i < orderedBalls.Count(); i++) {
+      if (orderedBalls.ElementAt(i).Value <= roll) {
+        pickedBall = orderedBalls.ElementAt(i).Key;
       }
     }
 
@@ -111,8 +111,9 @@ internal class Game(int? seed, double startingBalance = 0, bool demoMode = false
 
       Thread.Sleep(500);
 
-      if (balance - PICK_PRICE < 0) {
+      if (balance - PICK_PRICE < 0 && !demoMode) {
         End();
+        Console.WriteLine("bla");
         break;
       }
 
@@ -123,13 +124,12 @@ internal class Game(int? seed, double startingBalance = 0, bool demoMode = false
 
   internal void PlayRounds(int rounds) {
     for (var i = 0; i < rounds; i++) {
+      PlayRound();
 
-      if (balance - PICK_PRICE < 0) {
+      if (balance - PICK_PRICE < 0 && !demoMode) {
         End();
         break;
       }
-
-      PlayRound();
     }
   }
 
