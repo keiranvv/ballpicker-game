@@ -38,6 +38,9 @@ internal class Game(int? seed, double startingBalance = 0, bool demoMode = false
   internal virtual void OnBallPicked(string pickedBall)
   {
     spentCredits += PICK_PRICE;
+    if (!demoMode) {
+      balance -= PICK_PRICE;
+    }
 
     if (pickedBall == "win") {
       winnings += WIN_AMOUNT;
@@ -47,11 +50,15 @@ internal class Game(int? seed, double startingBalance = 0, bool demoMode = false
       }
     }
 
-    if (!demoMode) {
-      balance -= PICK_PRICE;
-    }
-
     BallPicked?.Invoke(this, new BallPickedEventArgs(winnings, spentCredits, balance, pickedBall));
+
+    // Because we force the next pick, instead of tracking the free pick, just restore the balance.
+    // This is done after the event is published so that the impression is still made that the user spent the balance on this roll.
+    // Of course this could be changed if there was a use case for stopping between picks.
+    if (pickedBall == "extra_pick") {
+      balance += PICK_PRICE;
+      spentCredits -= PICK_PRICE;
+    }
   }
 
   internal event EventHandler<RoundEndedEventArgs>? RoundEnded;
@@ -76,7 +83,7 @@ internal class Game(int? seed, double startingBalance = 0, bool demoMode = false
   }
 
   private bool CanContinue() {
-    return (balance - PICK_PRICE >= 0 || demoMode);
+    return balance - PICK_PRICE >= 0 || demoMode;
   }
 
   // Select one of the balls based on their weight.
