@@ -8,6 +8,7 @@ This is just a demo so that player has unlimited funds, however the total win/lo
 
 ## Prerequisites
 - DotNet 8.0
+- A supported IDE or dotnet CLI
 
 ## Running the game
 Clone this repository and use your IDE or Console to run the application. For example in the terminal you can run the following command:
