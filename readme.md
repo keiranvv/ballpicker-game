@@ -4,7 +4,7 @@ Ball Picker for the win is a game in which the player grabs balls from a basket 
 
 The player can choose to play one or ten rounds at a time.
 
-This is just a demo so that player has unlimited funds, however the total win/loss record is displayed as the game goes on.
+This is just a demo so that player has unlimited funds, however the total win/loss record is displayed as the game goes on. Demo mode and starting balance can be changed in the `Program.cs` file.
 
 ## Prerequisites
 - DotNet 8.0
@@ -18,6 +18,7 @@ dotnet run
 ## Game rules
 - A round consists of one or more picks from the basket, ending when the player picks either a win or a no_win ball.
 - Each **pick** costs 10 credits to play.
+- After each pick the ball is immediately put back into the basket, before picking another ball.
 - A **win** will increase the player's balance by 20 credits.
 - A **loss** will not award any credits.
 
