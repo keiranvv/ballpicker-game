@@ -70,10 +70,11 @@ internal class Game(int? seed, double startingBalance = 0, bool demoMode = false
   private readonly Random r = seed.HasValue ? new Random(seed.Value) : new Random();
 
   private void Reset() {
+    // Kind of cheaty, accumulating the values for my weighted random calc
     _balls = new Dictionary<string, int>() {
       {"extra_pick", 1},
-      {"win", 5},
-      {"no_win", 14}
+      {"win", 6},
+      {"no_win", 20}
     };
 
     balance = startingBalance;
@@ -94,15 +95,16 @@ internal class Game(int? seed, double startingBalance = 0, bool demoMode = false
     // This can of course be done once when the ball are set, but it might then be unclear that it's required. The tradeoff would be a small amount of memory overhead.
     var orderedBalls = _balls.OrderBy(x => x.Value);
 
-    var numberOfBalls = orderedBalls.Sum(b => b.Value);
+    var numberOfBalls = orderedBalls.Max(b => b.Value);
 
-    var roll = r.Next(numberOfBalls);
+    var roll = r.Next(numberOfBalls) + 1;
 
     var pickedBall = "";
 
     for (int i = 0; i < orderedBalls.Count(); i++) {
-      if (orderedBalls.ElementAt(i).Value <= roll) {
+      if (roll <= orderedBalls.ElementAt(i).Value) {
         pickedBall = orderedBalls.ElementAt(i).Key;
+        break;
       }
     }
 
