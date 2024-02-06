@@ -113,7 +113,6 @@ internal class Game(int? seed, double startingBalance = 0, bool demoMode = false
 
       if (balance - PICK_PRICE < 0 && !demoMode) {
         End();
-        Console.WriteLine("bla");
         break;
       }
 
