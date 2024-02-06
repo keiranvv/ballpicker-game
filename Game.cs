@@ -1,20 +1,15 @@
-internal class BallPickedEventArgs(double winnings, double spentCredits, double balance, string pickedBall) : EventArgs {
+internal class GameEventArgs(double winnings, double spentCredits, double balance) : EventArgs {
+  internal readonly double SpentCredits = spentCredits;
+  internal readonly double Winnings = winnings;
+  internal readonly double Balance = balance;
+}
+internal class RoundEndedEventArgs(double winnings, double spentCredits, double balance) : GameEventArgs(winnings, spentCredits, balance) { }
+
+internal class BallPickedEventArgs(double winnings, double spentCredits, double balance, string pickedBall) : GameEventArgs(winnings, spentCredits, balance) {
   internal readonly string PickedBall = pickedBall;
-  internal readonly double SpentCredits = spentCredits;
-  internal readonly double Winnings = winnings;
-  internal readonly double Balance = balance;
 }
 
-internal class RoundEndedEventArgs(double winnings, double spentCredits, double balance) : EventArgs {
-  internal readonly double SpentCredits = spentCredits;
-  internal readonly double Winnings = winnings;
-  internal readonly double Balance = balance;
-}
-
-internal class GameEndedEventArgs(double winnings, double spentCredits, double balance, int roundsPlayed) : EventArgs {
-  internal readonly double SpentCredits = spentCredits;
-  internal readonly double Winnings = winnings;
-  internal readonly double Balance = balance;
+internal class GameEndedEventArgs(double winnings, double spentCredits, double balance, int roundsPlayed) : GameEventArgs(winnings, spentCredits, balance) {
   internal readonly int RoundsPlayed = roundsPlayed;
 }
 
@@ -28,8 +23,8 @@ internal class Game(int? seed, double startingBalance = 0, bool demoMode = false
   private int roundsPlayed = 0;
   private double spentCredits = 0;
   private double winnings = 0;
-  private double startingBalance = startingBalance;
   private double balance = startingBalance;
+  private readonly double startingBalance = startingBalance;
 
   // Events
   internal event EventHandler<GameEndedEventArgs>? GameEnded;
