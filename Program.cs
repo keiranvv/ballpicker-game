@@ -1,3 +1,3 @@
-﻿var app = new App(null, 0, true);
+﻿var app = new App(null, 10, false);
 
 app.Start();

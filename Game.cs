@@ -75,6 +75,10 @@ internal class Game(int? seed, double startingBalance = 0, bool demoMode = false
     winnings = 0;
   }
 
+  private bool CanContinue() {
+    return (balance - PICK_PRICE >= 0 || demoMode);
+  }
+
   // Select one of the balls based on their weight.
   // No need to really keep track of the ball counts now, as the ball is put back immedidately
   // after picking.
@@ -111,7 +115,7 @@ internal class Game(int? seed, double startingBalance = 0, bool demoMode = false
 
       Thread.Sleep(500);
 
-      if (balance - PICK_PRICE < 0 && !demoMode) {
+      if (!CanContinue()) {
         End();
         break;
       }
@@ -125,7 +129,7 @@ internal class Game(int? seed, double startingBalance = 0, bool demoMode = false
     for (var i = 0; i < rounds; i++) {
       PlayRound();
 
-      if (balance - PICK_PRICE < 0 && !demoMode) {
+      if (!CanContinue()) {
         End();
         break;
       }
