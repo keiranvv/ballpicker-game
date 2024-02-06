@@ -1,5 +1,3 @@
-using System.Security.Cryptography;
-
 internal class BallPickedEventArgs(double winnings, double spentCredits, double balance, string pickedBall) : EventArgs {
   internal readonly string PickedBall = pickedBall;
   internal readonly double SpentCredits = spentCredits;
